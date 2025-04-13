@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: insta-bot-panel
+    env: python
+    buildCommand: ""
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 10000
+    envVars:
+      - key: ACCESS_TOKEN
+        value: your_long_lived_token
+      - key: IG_USER_ID
+        value: your_instagram_user_id

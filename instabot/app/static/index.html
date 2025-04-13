@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insta Reel Bot Panel</title>
+</head>
+<body>
+    <h1>Insta Reel Bot Panel</h1>
+    <div>
+        <button onclick="fetchReels()">Fetch Reels</button>
+        <ul id="reels"></ul>
+    </div>
+    <div>
+        <input id="media_id" placeholder="Reel ID" />
+        <input id="keyword" placeholder="Keyword (e.g., link)" />
+        <input id="reply_msg" placeholder="Reply Message" />
+        <input id="dm_msg" placeholder="DM Message" />
+        <button onclick="setConfig()">Set Config</button>
+        <button onclick="startBot()">Start Bot</button>
+        <button onclick="stopBot()">Stop Bot</button>
+    </div>
+    <script>
+        function fetchReels() {
+            fetch('/reels').then(res => res.json()).then(data => {
+                document.getElementById('reels').innerHTML = data.map(d => 
+                    `<li>${d.id} - ${d.caption || ''}</li>`
+                ).join('');
+            });
+        }
+
+        function setConfig() {
+            fetch('/set_config', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    media_id: document.getElementById('media_id').value,
+                    keyword: document.getElementById('keyword').value,
+                    reply_msg: document.getElementById('reply_msg').value,
+                    dm_msg: document.getElementById('dm_msg').value
+                })
+            });
+        }
+
+        function startBot() {
+            fetch('/start_bot', { method: 'POST' });
+        }
+
+        function stopBot() {
+            fetch('/stop_bot', { method: 'POST' });
+        }
+    </script>
+</body>
+</html>
